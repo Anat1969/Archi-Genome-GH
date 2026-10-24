@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { viteSingleFile } from "vite-plugin-singlefile";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -12,8 +13,14 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-  build: {
+  plugins: [
+    react(),
+    mode === "development" && componentTagger(),
+    // `vite build --mode artifact` emits one self-contained index.html
+    mode === "artifact" && viteSingleFile(),
+  ].filter(Boolean),
+  define: mode === "artifact" ? { "import.meta.env.VITE_ROUTER": JSON.stringify("memory") } : {},
+  build: mode === "artifact" ? { outDir: "dist-artifact", assetsInlineLimit: 100_000_000 } : {
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {

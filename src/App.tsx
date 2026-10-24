@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,6 +10,14 @@ import Index from "./pages/Index.tsx";
 import ColorPsychology from "./pages/ColorPsychology.tsx";
 import HowColorsWork from "./pages/HowColorsWork.tsx";
 import NotFound from "./pages/NotFound.tsx";
+
+// The single-file build (hosted inside a sandboxed viewer) cannot use URL paths,
+// so it routes in memory and opens the view named by a bare #token.
+const HASH_VIEWS: Record<string, string> = {
+  studio: "/studio", wheel: "/wheel", psychology: "/color-psychology", colors: "/how-colors-work",
+};
+const useMemoryRouter = import.meta.env.VITE_ROUTER === "memory";
+const initialPath = HASH_VIEWS[window.location.hash.slice(1)] ?? "/";
 
 const FacadeStudio = lazy(() => import("./pages/FacadeStudio.tsx"));
 
@@ -47,9 +55,15 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      {useMemoryRouter ? (
+        <MemoryRouter initialEntries={[initialPath]}>
+          <AnimatedRoutes />
+        </MemoryRouter>
+      ) : (
       <BrowserRouter>
         <AnimatedRoutes />
       </BrowserRouter>
+      )}
     </TooltipProvider>
   </QueryClientProvider>
 );
