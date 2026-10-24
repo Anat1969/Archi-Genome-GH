@@ -1,0 +1,17 @@
+export const colorExplorationLabels = {
+  pageTitle: "איך צבעים עובדים בפועל",
+  heroTitle: "איך צבעים עובדים בפועל",
+  summaryTitle: "איך צבע פועל",
+  domainNavTitle: "חקרו לפי תחום",
+  imagePlaceholder: "תמונה להמחשה",
+  colorsTitle: "צבעים מרכזיים",
+  examplesTitle: "דוגמאות",
+  functionTitle: "פונקציית צבע",
+  functionEmotion: "רגש",
+  functionCommunication: "תקשורת",
+  functionSurvival: "הישרדות",
+  functionPhysics: "פיזיקה",
+  musicTitle: "מוזיקה וצבע",
+  livingTitle: "בעלי חיים וצמחים",
+  physicsTitle: "פיזיקה של צבע",
+};
