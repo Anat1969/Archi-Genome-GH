@@ -13,6 +13,18 @@ export default defineConfig(({ mode }) => ({
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  build: {
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ["three"],
+          r3f: ["@react-three/fiber", "@react-three/drei"],
+          fx: ["@react-three/postprocessing", "postprocessing"],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
